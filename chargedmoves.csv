@@ -1,0 +1,182 @@
+Move,Type,D,E,Effects
+Acid Spray,poison,20,45,100% chance -2 Def opponent
+Acrobatics,flying,110,60,
+Aerial Ace,flying,55,45,
+Aeroblast,flying,170,75,12.5% chance +2 Atk self
+Air Cutter,flying,60,55,
+Ancient Power,rock,60,45,10% chance +1 Atk +1 Def self
+Aqua Jet,water,45,45,
+Aqua Tail,water,50,35,
+Aura Sphere,fighting,100,55,
+Aurora Beam,ice,80,60,
+Avalanche,ice,90,45,
+Blast Burn,fire,110,50,
+Blaze Kick,fire,55,40,
+Blizzard,ice,140,75,
+Body Slam,normal,60,35,
+Bone Club,ground,40,35,
+Brave Bird,flying,130,55,100% chance -3 Def self
+Brick Break,fighting,40,35,
+Brine,water,60,50,
+Brutal Swing,dark,65,40,
+Bubble Beam,water,25,40,100% chance -1 Atk opponent
+Bug Buzz,bug,100,60,30% chance -1 Def opponent
+Bulldoze,ground,80,60,
+Close Combat,fighting,100,45,100% chance -2 Def self
+Crabhammer,water,85,50,12.5% chance +2 Atk self
+Cross Chop,fighting,50,35,
+Cross Poison,poison,50,35,12.5% chance +2 Atk self
+Crunch,dark,70,45,30% chance -1 Def opponent
+Dark Pulse,dark,80,50,
+Dazzling Gleam,fairy,110,70,
+Dig,ground,100,80,
+Disarming Voice,fairy,70,45,
+Discharge,electric,65,45,
+Doom Desire,steel,75,40,
+Draco Meteor,dragon,150,65,100% chance -2 Atk self
+Dragon Claw,dragon,50,35,
+Dragon Pulse,dragon,90,60,
+Drain Punch,fighting,20,40,100% chance +1 Def self
+Draining Kiss,fairy,60,55,
+Drill Peck,flying,65,40,
+Drill Run,ground,80,45,
+Dynamic Punch,fighting,90,50,
+Earth Power,ground,90,55,10% chance -1 Def opponent
+Earthquake,ground,120,65,
+Energy Ball,grass,90,55,10% chance -1 Def opponent
+Feather Dance,flying,35,50,100% chance -2 Atk opponent
+Fell Stinger,bug,20,35,100% chance +1 Atk self
+Fire Blast,fire,140,80,
+Fire Punch,fire,55,40,
+Flame Burst,fire,70,55,
+Flame Charge,fire,65,50,100% chance +1 Atk self
+Flame Wheel,fire,60,55,
+Flamethrower,fire,90,55,
+Flash Cannon,steel,110,70,
+Fly,flying,80,45,
+Flying Press,fighting,90,40,
+Focus Blast,fighting,150,75,
+Foul Play,dark,70,45,
+Frenzy Plant,grass,100,45,
+Frustration,normal,10,70,
+Future Sight,psychic,120,65,
+Giga Drain,grass,50,80,
+Giga Impact,normal,150,80,
+Grass Knot,grass,90,50,
+Gunk Shot,poison,130,75,
+Gyro Ball,steel,80,60,
+Heart Stamp,psychic,40,40,
+Heat Wave,fire,95,75,
+Heavy Slam,steel,70,50,
+High Horsepower,ground,100,60,
+Horn Attack,normal,40,35,
+Hurricane,flying,110,65,
+Hydro Cannon,water,80,40,
+Hydro Pump,water,130,75,
+Hyper Beam,normal,150,80,
+Hyper Fang,normal,80,50,
+Ice Beam,ice,90,55,
+Ice Punch,ice,55,40,
+Icicle Spear,ice,60,40,
+Icy Wind,ice,60,45,100% chance -1 Atk opponent
+Iron Head,steel,70,50,
+Last Resort,normal,90,55,
+Leaf Blade,grass,70,35,
+Leaf Storm,grass,130,55,100% chance -2 Atk self
+Leaf Tornado,grass,45,40,50% chance -2 Atk opponent
+Low Sweep,fighting,40,40,
+Lunge,bug,60,45,100% chance -1 Atk opponent
+Luster Purge,psychic,120,60,50% chance -1 Def opponent
+Magnet Bomb,steel,70,45,
+Mega Drain,grass,25,55,
+Megahorn,bug,110,55,
+Meteor Beam,rock,120,60,100% chance +1 Atk self
+Meteor Mash,steel,100,50,
+Mirror Coat,psychic,60,55,
+Mirror Shot,steel,35,35,30% chance -1 Atk opponent
+Mist Ball,psychic,120,60,50% chance -1 Atk opponent
+Moonblast,fairy,110,60,10% chance -1 Atk opponent
+Mud Bomb,ground,55,40,
+Muddy Water,water,35,35,30% chance -1 Atk opponent
+Night Shade,ghost,60,55,
+Night Slash,dark,50,35,12.5% chance +2 Atk self
+Obstruct,dark,15,40,100% chance +1 Def self 100% chance -1 Def opponent
+Octazooka,water,50,50,50% chance -2 Atk opponent
+Ominous Wind,ghost,45,45,10% chance +1 Atk +1 Def self
+Origin Pulse,water,130,60,
+Outrage,dragon,110,60,
+Overheat,fire,130,55,100% chance -2 Atk self
+Parabolic Charge,electric,65,55,
+Payback,dark,110,60,
+Petal Blizzard,grass,110,65,
+Play Rough,fairy,90,60,
+Poison Fang,poison,40,35,100% chance -1 Def opponent
+Poltergeist,ghost,140,75,
+Power Gem,rock,80,60,
+Power Whip,grass,90,50,
+Power-Up Punch,fighting,20,35,100% chance +1 Atk self
+Precipice Blades,ground,130,60,
+Psybeam,psychic,70,60,
+Psychic,psychic,90,55,10% chance -1 Def opponent
+Psychic Fangs,psychic,40,35,100% chance -1 Def opponent
+Psycho Boost,psychic,70,35,100% chance -2 Atk self
+Psyshock,psychic,70,45,
+Psystrike,psychic,90,45,
+Razor Shell,water,35,35,50% chance -1 Def opponent
+Rest,normal,50,35,
+Return,normal,130,70,
+Rock Blast,rock,50,40,
+Rock Slide,rock,75,45,
+Rock Tomb,rock,70,60,100% chance -1 Atk opponent
+Rock Wrecker,rock,110,50,
+Sacred Fire,fire,130,65,50% chance -1 Atk opponent
+Sacred Sword,fighting,60,35,
+Sand Tomb,ground,25,40,100% chance -1 Def opponent
+Scald,water,80,50,30% chance -1 Atk opponent
+Seed Bomb,grass,55,40,
+Seed Flare,grass,130,75,40% chance -2 Def opponent
+Shadow Ball,ghost,100,55,
+Shadow Bone,ghost,75,45,20% chance -1 Def opponent
+Shadow Force,ghost,120,90,
+Shadow Punch,ghost,40,35,
+Shadow Sneak,ghost,50,45,
+Signal Beam,bug,75,55,20% chance -1 Atk -1 Def opponent
+Silver Wind,bug,60,45,10% chance +1 Atk +1 Def self
+Skull Bash,normal,130,75,100% chance +1 Def self
+Sky Attack,flying,75,45,
+Sludge,poison,50,40,
+Sludge Bomb,poison,80,50,
+Sludge Wave,poison,110,65,
+Solar Beam,grass,150,80,
+Stomp,normal,55,40,
+Stone Edge,rock,100,55,
+Struggle,normal,35,100,
+Submission,fighting,60,50,
+Superpower,fighting,85,40,100% chance -1 Atk -1 Def self
+Surf,water,65,40,
+Swift,normal,60,55,
+Synchronoise,psychic,80,50,
+Techno Blast (Burn),fire,120,55,
+Techno Blast (Chill),ice,120,55,
+Techno Blast (Douse),water,120,55,
+Techno Blast (Normal),normal,120,55,
+Techno Blast (Shock),electric,120,55,
+Thunder,electric,100,60,
+Thunder Punch,electric,55,40,
+Thunderbolt,electric,90,55,
+Tri Attack,normal,65,50,50% chance -1 Atk -1 Def opponent
+Twister,dragon,45,45,
+V-Create,fire,95,40,100% chance -3 Def self
+Vise Grip,normal,40,40,
+Water Pulse,water,70,60,
+Weather Ball (Fire),fire,55,35,
+Weather Ball (Ice),ice,55,35,
+Weather Ball (Normal),normal,55,35,
+Weather Ball (Rock),rock,55,35,
+Weather Ball (Water),water,55,35,
+Wild Charge,electric,100,45,100% chance -2 Def self
+Wrap,normal,60,45,
+Wrap Green,normal,25,45,
+Wrap Pink,normal,25,45,
+X-Scissor,bug,45,35,
+Zap Cannon,electric,150,80,66% chance -1 Atk opponent
