@@ -1,4 +1,4 @@
-import torch
+from torch import tensor, Tensor
 import math
 
 
@@ -35,33 +35,34 @@ class Pokemon:
         # self.type_effectiveness = type_effectiveness
 
     def get_initial_state(self):
-        return torch.tensor([self.initial_hp, 0, 0])
+        return tensor([self.initial_hp, 0, 0])
 
     def get_actions(self, state):
-        return torch.tensor(
-            [
-                # fast attack
-                1 if state[2] == 0 else 0,
-                # charged attack 1
-                1 if state[1] >= self.charged_attack_1.energy_cost else 0,
-                # charged attack 2
-                1 if state[1] >= self.charged_attack_2.energy_cost else 0,
-            ]
-        )
+        actions = [0]
+        # fast attack
+        if state[2] <= 0:
+            actions.append(1)
+        # charged attack 1
+        if state[1] >= self.charged_attack_1.energy_cost:
+            actions.append(2)
+        # charged attack 2
+        if state[1] >= self.charged_attack_2.energy_cost:
+            actions.append(3)
+        return actions
 
-    def fast_attack_damage(self, defender: Pokemon):
+    def fast_attack_damage(self, defender):
         # effectiveness = defender.type_effectiveness[self.fast_attack]
         bonus_multiplier = 0.65
         damage = math.floor(self.fast_attack.damage * self.attack / defender.defense * bonus_multiplier)
         # need to add stab and effectiveness
         return damage + 1
 
-    def charged_attack_1_damage(self, defender: Pokemon, charge: float = 1):
+    def charged_attack_1_damage(self, defender, charge: float = 1):
         bonus_multiplier = 0.65
         damage = math.floor(self.charged_attack_1.damage * self.attack / defender.defense * bonus_multiplier * charge)
         return damage + 1
 
-    def charged_attack_2_damage(self, defender: Pokemon, charge: float = 1):
+    def charged_attack_2_damage(self, defender, charge: float = 1):
         bonus_multiplier = 0.65
         damage = math.floor(self.charged_attack_2.damage * self.attack / defender.defense * bonus_multiplier * charge)
         return damage + 1
@@ -73,13 +74,13 @@ class Battle:
         self.pokemon_2 = pokemon_2
 
     def get_initial_state(self):
-        return torch.tensor([self.pokemon_1.initial_hp, 0, 0, self.pokemon_2.initial_hp, 0, 0])
+        return tensor([self.pokemon_1.initial_hp, 0, 0, self.pokemon_2.initial_hp, 0, 0])
 
     def get_next_state(
         self,
-        current_state: torch.Tensor,
-        action_1: torch.Tensor,
-        action_2: torch.Tensor,
+        current_state: Tensor,
+        action_1: Tensor,
+        action_2: Tensor,
     ):
         # state:
         # 0: pokemon 1 hp
@@ -124,5 +125,5 @@ class Battle:
             next_state[0] -= self.pokemon_2.charged_attack_2_damage(self.pokemon_1)
         return next_state
 
-    def get_reward(self, state: torch.Tensor):
+    def get_reward(self, state: Tensor):
         return 1 if state[3] <= 0 else 0
