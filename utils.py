@@ -3,16 +3,22 @@ import math
 
 
 class FastAttack:
-    def __init__(self, damage: int, energy_generated: int, turns: int) -> None:
+    def __init__(self, damage: int, energy_generated: int, turns: int
+    #, type: str
+    ) -> None:
         self.damage = damage
         self.energy_generated = energy_generated
         self.turns = turns
+        #self.type = type
 
 
 class ChargedAttack:
-    def __init__(self, damage: int, energy_cost: int) -> None:
+    def __init__(self, damage: int, energy_cost: int
+    #, type: str
+    ) -> None:
         self.damage = damage
         self.energy_cost = energy_cost
+        #self.type = type
 
 
 class Pokemon:
@@ -21,18 +27,22 @@ class Pokemon:
         initial_hp: int,
         attack: float,
         defense: float,
+        # type_1 = str
+        # type_2 = str
+        # type_effectiveness: dict
         fast_attack: FastAttack,
         charged_attack_1: ChargedAttack,
         charged_attack_2: ChargedAttack,
-        # type_effectiveness: dict
     ) -> None:
         self.initial_hp = initial_hp
         self.attack = attack
         self.defense = defense
+        # self.type_1 = type_1
+        # self.type_2 = type_2
+        # self.type_effectiveness = type_effectiveness
         self.fast_attack = fast_attack
         self.charged_attack_1 = charged_attack_1
         self.charged_attack_2 = charged_attack_2
-        # self.type_effectiveness = type_effectiveness
 
     def get_initial_state(self):
         return tensor([self.initial_hp, 0, 0]).float()
@@ -51,20 +61,33 @@ class Pokemon:
         return tensor(actions)
 
     def fast_attack_damage(self, defender):
-        # effectiveness = defender.type_effectiveness[self.fast_attack]
+        # effectiveness = defender.type_effectiveness[self.fast_attack.type]
+        # if self.fast_attack.type == self.type_1 or self.fast_attack.type == self.type_2:
+        #     stab = 1.2
+        # else: stab = 1
         bonus_multiplier = 0.65
         damage = math.floor(self.fast_attack.damage * self.attack / defender.defense * bonus_multiplier)
-        # need to add stab and effectiveness
+        # need to also multiply by stab and effectiveness
         return damage + 1
 
     def charged_attack_1_damage(self, defender, charge: float = 1):
+        # effectiveness = defender.type_effectiveness[self.charged_attack_1.type]
+        # if self.charged_attack_1.type == self.type_1 or self.charged_attack_1.type == self.type_2:
+        #     stab = 1.2
+        # else: stab = 1
         bonus_multiplier = 0.65
         damage = math.floor(self.charged_attack_1.damage * self.attack / defender.defense * bonus_multiplier * charge)
+        # need to also multiply by stab and effectiveness
         return damage + 1
 
     def charged_attack_2_damage(self, defender, charge: float = 1):
+        # effectiveness = defender.type_effectiveness[self.charged_attack_1.type]
+        # if self.charged_attack_2.type == self.type_1 or self.charged_attack_2.type == self.type_2:
+        #     stab = 1.2
+        # else: stab = 1
         bonus_multiplier = 0.65
         damage = math.floor(self.charged_attack_2.damage * self.attack / defender.defense * bonus_multiplier * charge)
+        # need to also multiply by stab and effectiveness
         return damage + 1
 
 

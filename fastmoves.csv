@@ -1,73 +1,73 @@
-Move,Type,D,E,T
-Acid,poison,6,5,2
-Air Slash,flying,9,9,3
-Astonish,ghost,5,9,3
-Bite,dark,4,2,1
-Bubble,water,7,11,3
-Bug Bite,bug,3,3,1
-Bullet Punch,steel,6,7,2
-Bullet Seed,grass,5,13,3
-Charge Beam,electric,5,11,3
-Charm,fairy,16,6,3
-Confusion,psychic,16,12,4
-Counter,fighting,8,7,2
-Cut,normal,3,2,1
-Double Kick,fighting,8,12,3
-Dragon Breath,dragon,4,3,1
-Dragon Tail,dragon,13,9,3
-Ember,fire,7,6,2
-Extrasensory,psychic,8,10,3
-Fairy Wind,fairy,3,9,2
-Feint Attack,dark,6,6,2
-Fire Fang,fire,8,5,2
-Fire Spin,fire,9,10,3
-Frost Breath,ice,7,5,2
-Fury Cutter,bug,2,4,1
-Gust,flying,16,12,4
-Hex,ghost,6,12,3
-Hidden Power,normal,9,8,3
-Ice Fang,ice,8,5,2
-Ice Shard,ice,9,10,3
-Incinerate,fire,15,20,5
-Infestation,bug,6,12,3
-Iron Tail,steel,9,6,3
-Karate Chop,fighting,5,8,2
-Lick,ghost,3,3,1
-Lock On,normal,1,5,1
-Low Kick,fighting,4,5,2
-Magical Leaf,grass,10,10,3
-Metal Claw,steel,5,6,2
-Mud Shot,ground,3,9,2
-Mud Slap,ground,11,8,3
-Peck,flying,6,5,2
-Poison Jab,poison,7,7,2
-Poison Sting,poison,3,9,2
-Pound,normal,4,4,2
-Powder Snow,ice,5,8,2
-Present,normal,3,12,3
-Psycho Cut,psychic,3,9,2
-Quick Attack,normal,5,8,2
-Razor Leaf,grass,10,4,2
-Rock Smash,fighting,9,7,3
-Rock Throw,rock,8,5,2
-Rollout,rock,4,13,3
-Scratch,normal,4,2,1
-Shadow Claw,ghost,6,8,2
-Smack Down,rock,12,8,3
-Snarl,dark,5,13,3
-Spark,electric,4,8,2
-Splash,water,0,12,4
-Steel Wing,steel,7,5,2
-Struggle Bug,bug,9,8,3
-Sucker Punch,dark,5,7,2
-Tackle,normal,3,3,1
-Take Down,normal,5,8,3
-Thunder Fang,electric,8,5,2
-Thunder Shock,electric,3,9,2
-Vine Whip,grass,5,8,2
-Volt Switch,electric,12,16,4
-Water Gun,water,3,3,1
-Waterfall,water,12,8,3
-Wing Attack,flying,5,7,2
-Yawn,normal,0,12,4
-Zen Headbutt,psychic,8,6,3
+Move,D,E_generated,T,Type
+Acid,6,5,2,poison
+Air Slash,9,9,3,flying
+Astonish,5,9,3,ghost
+Bite,4,2,1,dark
+Bubble,7,11,3,water
+Bug Bite,3,3,1,bug
+Bullet Punch,6,7,2,steel
+Bullet Seed,5,13,3,grass
+Charge Beam,5,11,3,electric
+Charm,16,6,3,fairy
+Confusion,16,12,4,psychic
+Counter,8,7,2,fighting
+Cut,3,2,1,normal
+Double Kick,8,12,3,fighting
+Dragon Breath,4,3,1,dragon
+Dragon Tail,13,9,3,dragon
+Ember,7,6,2,fire
+Extrasensory,8,10,3,psychic
+Fairy Wind,3,9,2,fairy
+Feint Attack,6,6,2,dark
+Fire Fang,8,5,2,fire
+Fire Spin,9,10,3,fire
+Frost Breath,7,5,2,ice
+Fury Cutter,2,4,1,bug
+Gust,16,12,4,flying
+Hex,6,12,3,ghost
+Hidden Power,9,8,3,normal
+Ice Fang,8,5,2,ice
+Ice Shard,9,10,3,ice
+Incinerate,15,20,5,fire
+Infestation,6,12,3,bug
+Iron Tail,9,6,3,steel
+Karate Chop,5,8,2,fighting
+Lick,3,3,1,ghost
+Lock On,1,5,1,normal
+Low Kick,4,5,2,fighting
+Magical Leaf,10,10,3,grass
+Metal Claw,5,6,2,steel
+Mud Shot,3,9,2,ground
+Mud Slap,11,8,3,ground
+Peck,6,5,2,flying
+Poison Jab,7,7,2,poison
+Poison Sting,3,9,2,poison
+Pound,4,4,2,normal
+Powder Snow,5,8,2,ice
+Present,3,12,3,normal
+Psycho Cut,3,9,2,psychic
+Quick Attack,5,8,2,normal
+Razor Leaf,10,4,2,grass
+Rock Smash,9,7,3,fighting
+Rock Throw,8,5,2,rock
+Rollout,4,13,3,rock
+Scratch,4,2,1,normal
+Shadow Claw,6,8,2,ghost
+Smack Down,12,8,3,rock
+Snarl,5,13,3,dark
+Spark,4,8,2,electric
+Splash,0,12,4,water
+Steel Wing,7,5,2,steel
+Struggle Bug,9,8,3,bug
+Sucker Punch,5,7,2,dark
+Tackle,3,3,1,normal
+Take Down,5,8,3,normal
+Thunder Fang,8,5,2,electric
+Thunder Shock,3,9,2,electric
+Vine Whip,5,8,2,grass
+Volt Switch,12,16,4,electric
+Water Gun,3,3,1,water
+Waterfall,12,8,3,water
+Wing Attack,5,7,2,flying
+Yawn,0,12,4,normal
+Zen Headbutt,8,6,3,psychic
