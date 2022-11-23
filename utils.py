@@ -35,7 +35,7 @@ class Pokemon:
         # self.type_effectiveness = type_effectiveness
 
     def get_initial_state(self):
-        return tensor([self.initial_hp, 0, 0])
+        return tensor([self.initial_hp, 0, 0]).float()
 
     def get_actions(self, state):
         actions = [0]
@@ -48,7 +48,7 @@ class Pokemon:
         # charged attack 2
         if state[1] >= self.charged_attack_2.energy_cost:
             actions.append(3)
-        return actions
+        return tensor(actions)
 
     def fast_attack_damage(self, defender):
         # effectiveness = defender.type_effectiveness[self.fast_attack]
@@ -74,7 +74,7 @@ class Battle:
         self.pokemon_2 = pokemon_2
 
     def get_initial_state(self):
-        return tensor([self.pokemon_1.initial_hp, 0, 0, self.pokemon_2.initial_hp, 0, 0])
+        return tensor([self.pokemon_1.initial_hp, 0, 0, self.pokemon_2.initial_hp, 0, 0]).float()
 
     def get_next_state(
         self,
@@ -92,36 +92,38 @@ class Battle:
 
         next_state = current_state
         # changes based on pokemon 1 actions
-        # fast attack
-        if action_1[0] == 1:
-            next_state[1] += self.fast_attack.energy_generated
-            next_state[2] += self.fast_attack.turns
-            next_state[3] -= self.pokemon_1.fast_attack_damage(self.pokemon_2)
-        else:
+        # do nothing
+        if action_1 == 0:
             next_state[2] -= 1
+        # fast attack
+        if action_1 == 1:
+            next_state[1] += self.pokemon_1.fast_attack.energy_generated
+            next_state[2] += self.pokemon_1.fast_attack.turns
+            next_state[3] -= self.pokemon_1.fast_attack_damage(self.pokemon_2)
         # Charged move 1
-        if action_1[1] == 1:
-            next_state[1] -= self.charged_attack_1.energy_cost
+        if action_1 == 2:
+            next_state[1] -= self.pokemon_1.charged_attack_1.energy_cost
             next_state[3] -= self.pokemon_1.charged_attack_1_damage(self.pokemon_2)
         # Charged move 2
-        if action_1[2] == 1:
-            next_state[1] -= self.charged_attack_2.energy_cost
+        if action_1 == 3:
+            next_state[1] -= self.pokemon_1.charged_attack_2.energy_cost
             next_state[3] -= self.pokemon_1.charged_attack_2_damage(self.pokemon_2)
         # changes based on pokemon 2 actions
-        # fast attack
-        if action_2[0] == 1:
-            next_state[4] += self.fast_attack.energy_generated
-            next_state[5] += self.fast_attack.turns
-            next_state[0] -= self.pokemon_2.fast_attack_damage(self.pokemon_1)
-        else:
+        # do nothing
+        if action_2 == 0:
             next_state[5] -= 1
+        # fast attack
+        if action_2 == 1:
+            next_state[4] += self.pokemon_2.fast_attack.energy_generated
+            next_state[5] += self.pokemon_2.fast_attack.turns
+            next_state[0] -= self.pokemon_2.fast_attack_damage(self.pokemon_1)
         # Charged move 1
-        if action_2[1] == 1:
-            next_state[4] -= self.charged_attack_1.energy_cost
+        if action_2 == 2:
+            next_state[4] -= self.pokemon_2.charged_attack_1.energy_cost
             next_state[0] -= self.pokemon_2.charged_attack_1_damage(self.pokemon_1)
         # Charged move 2
-        if action_2[2] == 1:
-            next_state[4] -= self.charged_attack_2.energy_cost
+        if action_2 == 3:
+            next_state[4] -= self.pokemon_2.charged_attack_2.energy_cost
             next_state[0] -= self.pokemon_2.charged_attack_2_damage(self.pokemon_1)
         return next_state
 
