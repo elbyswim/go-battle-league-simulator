@@ -30,8 +30,8 @@ class DQN(nn.Module):
 class QLearning():
     def __init__(self, loss_function=nn.SmoothL1Loss(), optimizer=torch.optim.Adam, gamma=0.999) -> None:
         self.dqn = DQN()
-        self.target = DQN()
-        self.target.load_state_dict(self.dqn.state_dict())
+        # self.target = DQN()
+        # self.target.load_state_dict(self.dqn.state_dict())
         self.loss_function = loss_function
         self.optimizer = optimizer(self.dqn.parameters())
         self.gamma = gamma
@@ -46,7 +46,8 @@ class QLearning():
             # print(f"exploration action picked: {action}")
         # exploitation
         else:
-            q_values = self.target(state) * one_hot(possible_actions).sum(axis=0)
+            # with torch.no_grad():
+            q_values = self.dqn(state) * one_hot(possible_actions, N_ACTIONS).sum(axis=0)
             action = argmax(q_values)    
             # print(f"exploitation action picked: {action}")
         return action.long().item()
@@ -85,23 +86,25 @@ class QLearning():
                 action_1 = self.select_action(state_1, battle_1.pokemon_1, 1 / (epoch + 1))
                 value_1 = self.dqn(state_1)[action_1]
                 action_2 = self.select_action(state_2, battle_2.pokemon_2, 1 / (epoch + 1))
+                # with torch.no_grad():
                 value_2 = self.dqn(state_2)[action_2]
                 next_state_1 = battle_1.get_next_state(state_1, action_1, action_2)
                 next_state_2 = battle_2.get_next_state(state_2, action_2, action_1)
                 reward_1 = battle_1.get_reward(next_state_1)
                 reward_2 = battle_2.get_reward(next_state_2)
-                expected_value_1 = reward_1 + self.gamma * torch.amax(self.target(next_state_1) * one_hot(battle_1.pokemon_1.get_actions(next_state_1), N_ACTIONS).sum(axis=0))
-                expected_value_2 = reward_2 + self.gamma * torch.amax(self.target(next_state_2) * one_hot(battle_2.pokemon_2.get_actions(next_state_2), N_ACTIONS).sum(axis=0))
+                expected_value_1 = reward_1 + self.gamma * torch.amax(self.dqn(next_state_1) * one_hot(battle_1.pokemon_1.get_actions(next_state_1), N_ACTIONS).sum(axis=0))
+                expected_value_2 = reward_2 + self.gamma * torch.amax(self.dqn(next_state_2) * one_hot(battle_2.pokemon_2.get_actions(next_state_2), N_ACTIONS).sum(axis=0))
                 loss = self.loss_function(value_1, expected_value_1) + self.loss_function(value_2, expected_value_2)
-                losses.append(loss)
+                losses.append(loss.detach())
 
-                self.optimizer.zero_grad()
+                self.dqn.zero_grad()
                 loss.backward()
                 self.optimizer.step()
 
                 if next_state_1[0] <= 0 or next_state_1[3] <= 0:
                     break
 
+                state_1 = next_state_1
                 state_1, state_2 = next_state_1, next_state_2
-                self.target.load_state_dict(self.dqn.state_dict())
+                # self.target.load_state_dict(self.dqn.state_dict())
         return losses

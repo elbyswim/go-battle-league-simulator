@@ -113,7 +113,7 @@ class Battle:
         # 4: pokemon 2 energy
         # 5: pokemon 2 cooldown
 
-        next_state = current_state
+        next_state = current_state.clone().detach()
         # changes based on pokemon 1 actions
         # do nothing
         if action_1 == 0:
