@@ -3,22 +3,29 @@ import math
 
 
 class FastAttack:
-    def __init__(self, damage: int, energy_generated: int, turns: int
-    #, type: str
+    def __init__(
+        self,
+        damage: int,
+        energy_generated: int,
+        turns: int
+        # , type: str
     ) -> None:
         self.damage = damage
         self.energy_generated = energy_generated
         self.turns = turns
-        #self.type = type
+        # self.type = type
 
 
 class ChargedAttack:
-    def __init__(self, damage: int, energy_cost: int
-    #, type: str
+    def __init__(
+        self,
+        damage: int,
+        energy_cost: int
+        # , type: str
     ) -> None:
         self.damage = damage
         self.energy_cost = energy_cost
-        #self.type = type
+        # self.type = type
 
 
 class Pokemon:
@@ -97,7 +104,22 @@ class Battle:
         self.pokemon_2 = pokemon_2
 
     def get_initial_state(self):
-        return tensor([self.pokemon_1.initial_hp, 0, 0, self.pokemon_2.initial_hp, 0, 0]).float()
+        return tensor(
+            [
+                self.pokemon_1.initial_hp,  # health
+                0,  # energy
+                0,  # turns until fast attack
+                self.pokemon_1.fast_attack_damage(self.pokemon_2),  # fast attack damage
+                self.pokemon_1.charged_attack_1_damage(self.pokemon_2),  # charged attack 1 damage
+                self.pokemon_1.charged_attack_2_damage(self.pokemon_2),  # charged attack 2 damage
+                self.pokemon_2.initial_hp,
+                0,  # energy
+                0,  # turns until fast attack
+                self.pokemon_2.fast_attack_damage(self.pokemon_1),  # fast attack damage
+                self.pokemon_2.charged_attack_1_damage(self.pokemon_1),  # charged attack 1 damage
+                self.pokemon_2.charged_attack_2_damage(self.pokemon_1),  # charged attack 2 damage
+            ]
+        ).float()
 
     def get_next_state(
         self,
@@ -122,33 +144,33 @@ class Battle:
         if action_1 == 1:
             next_state[1] += self.pokemon_1.fast_attack.energy_generated
             next_state[2] += self.pokemon_1.fast_attack.turns
-            next_state[3] -= self.pokemon_1.fast_attack_damage(self.pokemon_2)
+            next_state[6] -= next_state[3]
         # Charged move 1
         if action_1 == 2:
             next_state[1] -= self.pokemon_1.charged_attack_1.energy_cost
-            next_state[3] -= self.pokemon_1.charged_attack_1_damage(self.pokemon_2)
+            next_state[6] -= next_state[4]
         # Charged move 2
         if action_1 == 3:
             next_state[1] -= self.pokemon_1.charged_attack_2.energy_cost
-            next_state[3] -= self.pokemon_1.charged_attack_2_damage(self.pokemon_2)
+            next_state[6] -= next_state[5]
         # changes based on pokemon 2 actions
         # do nothing
         if action_2 == 0:
-            next_state[5] -= 1
+            next_state[8] -= 1
         # fast attack
         if action_2 == 1:
-            next_state[4] += self.pokemon_2.fast_attack.energy_generated
-            next_state[5] += self.pokemon_2.fast_attack.turns
-            next_state[0] -= self.pokemon_2.fast_attack_damage(self.pokemon_1)
+            next_state[7] += self.pokemon_2.fast_attack.energy_generated
+            next_state[8] += self.pokemon_2.fast_attack.turns
+            next_state[0] -= next_state[9]
         # Charged move 1
         if action_2 == 2:
-            next_state[4] -= self.pokemon_2.charged_attack_1.energy_cost
-            next_state[0] -= self.pokemon_2.charged_attack_1_damage(self.pokemon_1)
+            next_state[7] -= self.pokemon_2.charged_attack_1.energy_cost
+            next_state[0] -= next_state[10]
         # Charged move 2
         if action_2 == 3:
-            next_state[4] -= self.pokemon_2.charged_attack_2.energy_cost
-            next_state[0] -= self.pokemon_2.charged_attack_2_damage(self.pokemon_1)
+            next_state[7] -= self.pokemon_2.charged_attack_2.energy_cost
+            next_state[0] -= next_state[11]
         return next_state
 
     def get_reward(self, state: Tensor):
-        return 1 if state[3] <= 0 else 0
+        return 1 if state[6] <= 0 else 0

@@ -39,8 +39,17 @@ flash_cannon = ChargedAttack(*charged_moves_dict["Flash Cannon"][0:2])
 Stunfisk = Pokemon(*pokemon_dict["Stunfisk (Galarian)"][0:3], mud_shot, rock_slide, earthquake)
 Registeel = Pokemon(*pokemon_dict["Registeel"][0:3], lock_on, focus_blast, flash_cannon)
 
+stunfisk1 = Pokemon(*pokemon_dict["Stunfisk (Galarian)"][0:3], mud_shot, rock_slide, earthquake)
+stunfisk2 = Pokemon(*pokemon_dict["Stunfisk (Galarian)"][0:3], mud_shot, rock_slide, earthquake)
+stunfisk3 = Pokemon(*pokemon_dict["Stunfisk (Galarian)"][0:3], mud_shot, rock_slide, earthquake)
+stunfisk4 = Pokemon(*pokemon_dict["Stunfisk (Galarian)"][0:3], mud_shot, rock_slide, earthquake)
+
 agent = QLearning()
 
-losses = agent.learn([Stunfisk, Registeel], 5)
+losses = agent.learn([stunfisk1, stunfisk2], 10)
 plt.plot(losses)
 plt.show()
+
+battle = Battle(stunfisk3, stunfisk4)
+battle.get_initial_state()
+print(agent.select_action(battle.get_initial_state(), stunfisk3))

@@ -9,17 +9,18 @@ from tqdm import trange
 
 from utils import *
 
+INPUT_DIM = 12
 N_ACTIONS = 4
 
 class DQN(nn.Module):
     def __init__(self) -> None:
         super().__init__()
         self.model = nn.Sequential(
-            nn.Linear(6, 16),
+            nn.Linear(INPUT_DIM, 8),
             nn.ReLU(),
-            nn.Linear(16, 16),
+            nn.Linear(8, 8),
             nn.ReLU(),
-            nn.Linear(16, N_ACTIONS),
+            nn.Linear(8, N_ACTIONS),
             nn.ReLU(),
         )
 
@@ -28,16 +29,15 @@ class DQN(nn.Module):
 
 
 class QLearning():
-    def __init__(self, loss_function=nn.SmoothL1Loss(), optimizer=torch.optim.Adam, gamma=0.999) -> None:
+    def __init__(self, loss_function=nn.SmoothL1Loss(reduction='none'), optimizer=torch.optim.Adam, gamma=0.999) -> None:
         self.dqn = DQN()
         # self.target = DQN()
         # self.target.load_state_dict(self.dqn.state_dict())
         self.loss_function = loss_function
-        self.optimizer = optimizer(self.dqn.parameters())
+        self.optimizer = optimizer(self.dqn.parameters(), weight_decay=1e-5)
         self.gamma = gamma
 
-    def select_action(self, state, pokemon: Pokemon, epsilon: float = 0.5):
-        # return [0, 0, 0] or [1, 0, 0]
+    def select_action(self, state, pokemon: Pokemon, epsilon: float = 0.5) -> int:
         possible_actions = pokemon.get_actions(state) # subset of [0, 1, 2, 3]
         # exploration
         e = rand(1)

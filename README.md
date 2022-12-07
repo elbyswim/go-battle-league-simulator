@@ -68,3 +68,9 @@
 
 ### Environment
 - "get next state" function
+
+
+
+# Sources
+
+https://github.com/labmlai/annotated_deep_learning_paper_implementations/tree/master/labml_nn/rl/dqn
