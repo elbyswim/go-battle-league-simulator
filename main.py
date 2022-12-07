@@ -1,4 +1,6 @@
 from csv import reader
+from itertools import count
+
 import matplotlib.pyplot as plt
 
 from q_learning import *
@@ -44,12 +46,41 @@ stunfisk2 = Pokemon(*pokemon_dict["Stunfisk (Galarian)"][0:3], mud_shot, rock_sl
 stunfisk3 = Pokemon(*pokemon_dict["Stunfisk (Galarian)"][0:3], mud_shot, rock_slide, earthquake)
 stunfisk4 = Pokemon(*pokemon_dict["Stunfisk (Galarian)"][0:3], mud_shot, rock_slide, earthquake)
 
-agent = QLearning()
 
-losses = agent.learn([stunfisk1, stunfisk2], 10)
+def simulate_battle(agent: QLearning, pokemon_1: Pokemon, pokemon_2: Pokemon, max_steps: int = 1000) -> None:
+    battle = Battle(pokemon_1, pokemon_2)
+    state = battle.get_initial_state()
+    for i in range(max_steps):
+        print(f"Step {i}")
+        print(f"Current state: {state}")
+        action = agent.select_action(state, pokemon_1, 0)
+        print(f"Selected action: {action}")
+        state = battle.get_next_state(state, action, torch.tensor(0.0))
+        if state[0] <= 0 and state[6] <= 0:
+            break
+
+torch.manual_seed(0)
+agent = QLearning(hidden_size=64)
+# agent.learn([stunfisk1, stunfisk2], 20)
+losses = agent.learn([stunfisk1, stunfisk2], 20)
 plt.plot(losses)
 plt.show()
-
 battle = Battle(stunfisk3, stunfisk4)
 battle.get_initial_state()
-print(agent.select_action(battle.get_initial_state(), stunfisk3))
+action = agent.select_action(battle.get_initial_state(), stunfisk3, 0)
+print(action)
+
+
+
+# simulate_battle(agent, stunfisk3, stunfisk4)
+
+# for i in count():
+#     torch.manual_seed(i)
+#     agent = QLearning(hidden_size=64)
+#     agent.learn([stunfisk1, stunfisk2], 20)
+#     battle = Battle(stunfisk3, stunfisk4)
+#     battle.get_initial_state()
+#     action = agent.select_action(battle.get_initial_state(), stunfisk3, 0)
+#     print(action)
+#     if action.item() == 1:
+#         torch.save(agent.dqn.state_dict(), "model.pt")

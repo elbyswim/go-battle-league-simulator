@@ -172,5 +172,14 @@ class Battle:
             next_state[0] -= next_state[11]
         return next_state
 
-    def get_reward(self, state: Tensor):
-        return 1 if state[6] <= 0 else 0
+    def get_reward(self, action: Tensor, state: Tensor) -> float:
+        if state[6] <= 0:
+            return 1_000_000.
+        elif action == 1:
+            return self.pokemon_1.fast_attack_damage(self.pokemon_2)  # fast attack damage
+        elif action == 2:
+            return self.pokemon_1.charged_attack_1_damage(self.pokemon_2)  # charged attack 1 damage
+        elif action == 3:
+            return self.pokemon_1.charged_attack_2_damage(self.pokemon_2)  # charged attack 2 damage
+        else:
+            return 0.

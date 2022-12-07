@@ -1,4 +1,5 @@
 from itertools import count
+from typing import Any
 
 import numpy as np
 import torch
@@ -13,14 +14,14 @@ INPUT_DIM = 12
 N_ACTIONS = 4
 
 class DQN(nn.Module):
-    def __init__(self) -> None:
+    def __init__(self, input_dim: int = 12, hidden_size: int = 16, n_actions: int = 4) -> None:
         super().__init__()
         self.model = nn.Sequential(
-            nn.Linear(INPUT_DIM, 8),
+            nn.Linear(input_dim, hidden_size),
             nn.ReLU(),
-            nn.Linear(8, 8),
+            nn.Linear(hidden_size, hidden_size),
             nn.ReLU(),
-            nn.Linear(8, N_ACTIONS),
+            nn.Linear(hidden_size, n_actions),
             nn.ReLU(),
         )
 
@@ -29,8 +30,8 @@ class DQN(nn.Module):
 
 
 class QLearning():
-    def __init__(self, loss_function=nn.SmoothL1Loss(reduction='none'), optimizer=torch.optim.Adam, gamma=0.999) -> None:
-        self.dqn = DQN()
+    def __init__(self, hidden_size: int = 16, loss_function: Any = nn.SmoothL1Loss(reduction='none'), optimizer: Any = torch.optim.Adam, gamma: float = 0.999) -> None:
+        self.dqn = DQN(hidden_size=hidden_size)
         # self.target = DQN()
         # self.target.load_state_dict(self.dqn.state_dict())
         self.loss_function = loss_function
@@ -50,7 +51,7 @@ class QLearning():
             q_values = self.dqn(state) * one_hot(possible_actions, N_ACTIONS).sum(axis=0)
             action = argmax(q_values)    
             # print(f"exploitation action picked: {action}")
-        return action.long().item()
+        return action.long() #.item()
 
 
     # def optimize(self, state_1, state_2, battle_1: Battle, battle_2: Battle):
@@ -90,8 +91,8 @@ class QLearning():
                 value_2 = self.dqn(state_2)[action_2]
                 next_state_1 = battle_1.get_next_state(state_1, action_1, action_2)
                 next_state_2 = battle_2.get_next_state(state_2, action_2, action_1)
-                reward_1 = battle_1.get_reward(next_state_1)
-                reward_2 = battle_2.get_reward(next_state_2)
+                reward_1 = battle_1.get_reward(action_1, next_state_1)
+                reward_2 = battle_2.get_reward(action_2, next_state_2)
                 expected_value_1 = reward_1 + self.gamma * torch.amax(self.dqn(next_state_1) * one_hot(battle_1.pokemon_1.get_actions(next_state_1), N_ACTIONS).sum(axis=0))
                 expected_value_2 = reward_2 + self.gamma * torch.amax(self.dqn(next_state_2) * one_hot(battle_2.pokemon_2.get_actions(next_state_2), N_ACTIONS).sum(axis=0))
                 loss = self.loss_function(value_1, expected_value_1) + self.loss_function(value_2, expected_value_2)
