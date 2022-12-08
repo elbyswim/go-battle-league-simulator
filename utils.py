@@ -97,6 +97,95 @@ class Pokemon:
         # need to also multiply by stab and effectiveness
         return damage + 1
 
+class Pokemon_nothing(Pokemon):
+    def __init__(
+        self,
+        initial_hp: int,
+        attack: float,
+        defense: float,
+        # type_1 = str
+        # type_2 = str
+        # type_effectiveness: dict
+        fast_attack: FastAttack,
+        charged_attack_1: ChargedAttack,
+        charged_attack_2: ChargedAttack,
+    ) -> None:
+        Pokemon.__init__(self, initial_hp,
+        attack,
+        defense,
+        # type_1 = str
+        # type_2 = str
+        # type_effectiveness: dict
+        fast_attack,
+        charged_attack_1,
+        charged_attack_2)
+    
+    def get_actions(self, state):
+        actions = [0]
+        return tensor(actions)
+
+class Pokemon_fast(Pokemon):
+    def __init__(
+        self,
+        initial_hp: int,
+        attack: float,
+        defense: float,
+        # type_1 = str
+        # type_2 = str
+        # type_effectiveness: dict
+        fast_attack: FastAttack,
+        charged_attack_1: ChargedAttack,
+        charged_attack_2: ChargedAttack,
+    ) -> None:
+        Pokemon.__init__(self, initial_hp,
+        attack,
+        defense,
+        # type_1 = str
+        # type_2 = str
+        # type_effectiveness: dict
+        fast_attack,
+        charged_attack_1,
+        charged_attack_2)
+    
+    def get_actions(self, state):
+        actions = [0]
+        # fast attack
+        if state[2] <= 0:
+            actions = [1]
+        return tensor(actions)
+
+class Pokemon_charged(Pokemon): #assumed the cheaper charged move is always the first
+    def __init__(
+        self,
+        initial_hp: int,
+        attack: float,
+        defense: float,
+        # type_1 = str
+        # type_2 = str
+        # type_effectiveness: dict
+        fast_attack: FastAttack,
+        charged_attack_1: ChargedAttack,
+        charged_attack_2: ChargedAttack,
+    ) -> None:
+        Pokemon.__init__(self, initial_hp,
+        attack,
+        defense,
+        # type_1 = str
+        # type_2 = str
+        # type_effectiveness: dict
+        fast_attack,
+        charged_attack_1,
+        charged_attack_2)
+    
+    def get_actions(self, state):
+        actions = [0]
+        # if cooldown is done,
+        if state[2] <= 0:
+            if state[1] >= self.charged_attack_1.energy_cost: # do charged move if able
+                actions = [2]
+            else:                                             # else do fast attack
+                actions = [1]
+        return tensor(actions)
 
 class Battle:
     def __init__(self, pokemon_1: Pokemon, pokemon_2: Pokemon) -> None:
@@ -182,4 +271,4 @@ class Battle:
         elif action == 3:
             return self.pokemon_1.charged_attack_2_damage(self.pokemon_2)  # charged attack 2 damage
         else:
-            return 0.
+            return 0
