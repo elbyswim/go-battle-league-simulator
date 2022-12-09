@@ -54,3 +54,6 @@ Pokemon 2: {self.pokemon_2}
 
     def done(self) -> bool:
         return self.pokemon_1.hp <= 0 or self.pokemon_2.hp <= 0
+
+    def win(self) -> bool:
+        return self.pokemon_1.hp > 0 and self.pokemon_2.hp <= 0

@@ -44,16 +44,20 @@ Charged Attack 2: {self.charged_attack_2}
         """
 
     def get_state(self, defender: Pokemon) -> torch.Tensor:
-        return torch.tensor(
-            [
-                self.hp,
-                self.energy,
-                self.cooldown,
-                self.fast_attack_damage(defender),
-                self.charged_attack_1_damage(defender),
-                self.charged_attack_2_damage(defender),
-            ]
-        ).float()
+        return (
+            torch.tensor(
+                [
+                    self.hp,
+                    self.energy,
+                    self.cooldown,
+                    self.fast_attack_damage(defender),
+                    self.charged_attack_1_damage(defender),
+                    self.charged_attack_2_damage(defender),
+                ]
+            )
+            .float()
+            .reshape(1, -1)
+        )
 
     def update(self, action: int, damage_taken: float) -> None:
         self.hp -= damage_taken

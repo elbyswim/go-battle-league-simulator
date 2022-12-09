@@ -40,6 +40,7 @@ stunfisk5 = PokemonRandomAction(
     *pokemon_df[pokemon_df["Name"] == "Stunfisk (Galarian)"].values[0, :4], mud_shot, rock_slide, earthquake
 )
 
+
 def simulate_battle(agent: QLearning, pokemon_1: Pokemon, pokemon_2: Pokemon, max_steps: int = 1000) -> None:
     battle = Battle(pokemon_1, pokemon_2)
     hp_1 = []
@@ -49,7 +50,6 @@ def simulate_battle(agent: QLearning, pokemon_1: Pokemon, pokemon_2: Pokemon, ma
         hp_2.append(battle.pokemon_2.hp)
         if battle.done():
             break
-        # breakpoint()
         action = agent.select_action(*battle.get_state(), pokemon_1, 0)
         # print(f"Step {i} Selected actions: {action}")
         battle.update(action, pokemon_2.get_actions()[0])
@@ -62,14 +62,14 @@ def simulate_battle(agent: QLearning, pokemon_1: Pokemon, pokemon_2: Pokemon, ma
 
 torch.manual_seed(0)
 agent = QLearning(hidden_size=64)
-losses, moves = agent.learn(pokemon_df.iloc[:1], fast_moves_df, charged_moves_df, 100)
+losses = agent.buffer_learn(pokemon_df.iloc[:1], fast_moves_df, charged_moves_df, 50)
+# losses, moves = agent.learn(pokemon_df.iloc[:1], fast_moves_df, charged_moves_df, 50)
 # losses, moves = agent.learn(pokemon_df, fast_moves_df, charged_moves_df, 100)
-
 plt.plot(losses)
 plt.yscale("log")
 plt.show()
-plt.hist(moves)
-plt.show()
+# plt.hist(moves)
+# plt.show()
 
 
 simulate_battle(agent, stunfisk1, stunfisk2)
