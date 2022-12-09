@@ -15,15 +15,7 @@ Pokemon 2: {self.pokemon_2}
         """
 
     def get_state(self):
-        return (
-            torch.cat(
-                [
-                    self.pokemon_1.get_state(self.pokemon_2),
-                    self.pokemon_2.get_state(self.pokemon_2),
-                ]
-            ).float()
-            / 200
-        )
+        return self.pokemon_1.get_state(self.pokemon_2) / 200, self.pokemon_2.get_state(self.pokemon_1) / 200
 
     def update(self, action_1: int, action_2: int) -> None:
         if action_1 == 1:
@@ -59,3 +51,6 @@ Pokemon 2: {self.pokemon_2}
         else:
             reward = 0
         return reward / 200
+
+    def done(self) -> bool:
+        return self.pokemon_1.hp <= 0 or self.pokemon_2.hp <= 0
