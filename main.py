@@ -62,7 +62,7 @@ def simulate_battle(agent: QLearning, pokemon_1: Pokemon, pokemon_2: Pokemon, ma
 
 torch.manual_seed(0)
 agent = QLearning(hidden_size=64)
-losses = agent.buffer_learn(pokemon_df.iloc[:1], fast_moves_df, charged_moves_df, 50)
+losses = agent.buffer_learn(pokemon_df.iloc[:10], fast_moves_df, charged_moves_df, 200)
 # losses, moves = agent.learn(pokemon_df.iloc[:1], fast_moves_df, charged_moves_df, 50)
 # losses, moves = agent.learn(pokemon_df, fast_moves_df, charged_moves_df, 100)
 plt.plot(losses)

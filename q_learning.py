@@ -19,11 +19,6 @@ INPUT_DIM = 12
 N_ACTIONS = 4
 
 BATCH_SIZE = 128
-GAMMA = 0.99
-EPS_START = 0.9
-EPS_END = 0.05
-EPS_DECAY = 1000
-TAU = 0.005
 
 
 class DQN(nn.Module):
@@ -31,6 +26,10 @@ class DQN(nn.Module):
         super().__init__()
         self.model = nn.Sequential(
             nn.Linear(input_dim, hidden_size),
+            nn.ReLU(),
+            nn.Linear(hidden_size, hidden_size),
+            nn.ReLU(),
+            nn.Linear(hidden_size, hidden_size),
             nn.ReLU(),
             nn.Linear(hidden_size, hidden_size),
             nn.ReLU(),
@@ -77,22 +76,32 @@ class QLearning:
         return action.long().item()
 
     def initialize_pokemon(self, pokemon_df: pd.DataFrame, fast_moves_df: pd.DataFrame, charged_moves_df: pd.DataFrame):
-        choice_1 = np.random.choice(len(pokemon_df))
-        choice_2 = np.random.choice(len(pokemon_df))
-        mud_shot = FastAttack(*fast_moves_df[fast_moves_df["Move"] == "Mud Shot"].values[0, :4])
-        rock_slide = ChargedAttack(*charged_moves_df[charged_moves_df["Move"] == "Rock Slide"].values[0, :3])
-        earthquake = ChargedAttack(*charged_moves_df[charged_moves_df["Move"] == "Earthquake"].values[0, :3])
-        pokemon_1 = Pokemon(*pokemon_df.iloc[choice_1].tolist()[:4], mud_shot, rock_slide, earthquake)
-        pokemon_2 = PokemonRandomAction(*pokemon_df.iloc[choice_2].tolist()[:4], mud_shot, rock_slide, earthquake)
+        # choice_1 = np.random.choice(len(pokemon_df))
+        # choice_2 = np.random.choice(len(pokemon_df))
+        # mud_shot = FastAttack(*fast_moves_df[fast_moves_df["Move"] == "Mud Shot"].values[0, :4])
+        # rock_slide = ChargedAttack(*charged_moves_df[charged_moves_df["Move"] == "Rock Slide"].values[0, :3])
+        # earthquake = ChargedAttack(*charged_moves_df[charged_moves_df["Move"] == "Earthquake"].values[0, :3])
+        # pokemon_1 = Pokemon(*pokemon_df.iloc[choice_1].tolist()[:4], mud_shot, rock_slide, earthquake)
+        # pokemon_2 = PokemonRandomAction(*pokemon_df.iloc[choice_2].tolist()[:4], mud_shot, rock_slide, earthquake)
 
-        # fast_move_1 = FastAttack(*fast_moves_df.iloc[np.random.choice(len(fast_moves_df))].tolist()[:4])
-        # fast_move_2 = FastAttack(*fast_moves_df.iloc[np.random.choice(len(fast_moves_df))].tolist()[:4])
-        # charged_move_1 = ChargedAttack(*charged_moves_df.iloc[np.random.choice(len(charged_moves_df))].tolist()[:3])
-        # charged_move_2 = ChargedAttack(*charged_moves_df.iloc[np.random.choice(len(charged_moves_df))].tolist()[:3])
-        # charged_move_3 = ChargedAttack(*charged_moves_df.iloc[np.random.choice(len(charged_moves_df))].tolist()[:3])
-        # charged_move_4 = ChargedAttack(*charged_moves_df.iloc[np.random.choice(len(charged_moves_df))].tolist()[:3])
-        # pokemon_1 = Pokemon(*pokemon_df.iloc[choice_1].tolist()[:4], fast_move_1, charged_move_1, charged_move_2)
-        # pokemon_2 = PokemonRandomAction(*pokemon_df.iloc[choice_2].tolist()[:4], fast_move_2, charged_move_3, charged_move_4)
+        fast_move_1 = FastAttack(*fast_moves_df.iloc[np.random.choice(len(fast_moves_df))].tolist()[:4])
+        fast_move_2 = FastAttack(*fast_moves_df.iloc[np.random.choice(len(fast_moves_df))].tolist()[:4])
+        charged_move_1 = ChargedAttack(*charged_moves_df.iloc[np.random.choice(len(charged_moves_df))].tolist()[:3])
+        charged_move_2 = ChargedAttack(*charged_moves_df.iloc[np.random.choice(len(charged_moves_df))].tolist()[:3])
+        charged_move_3 = ChargedAttack(*charged_moves_df.iloc[np.random.choice(len(charged_moves_df))].tolist()[:3])
+        charged_move_4 = ChargedAttack(*charged_moves_df.iloc[np.random.choice(len(charged_moves_df))].tolist()[:3])
+        pokemon_1 = Pokemon(
+            *pokemon_df.iloc[np.random.choice(len(pokemon_df))].tolist()[:4],
+            fast_move_1,
+            charged_move_1,
+            charged_move_2,
+        )
+        pokemon_2 = PokemonRandomAction(
+            *pokemon_df.iloc[np.random.choice(len(pokemon_df))].tolist()[:4],
+            fast_move_2,
+            charged_move_3,
+            charged_move_4,
+        )
 
         return pokemon_1, pokemon_2
 
@@ -176,7 +185,7 @@ class QLearning:
             next_state_values[non_final_mask] = self.dqn(non_final_next_states_1, non_final_next_states_2).max(1)[0]
         next_state_values[win_mask] = 1
         # Compute the expected Q values
-        expected_state_action_values = (next_state_values * GAMMA) + reward_batch
+        expected_state_action_values = (next_state_values * self.gamma) + reward_batch
 
         # Compute Huber loss
         criterion = nn.SmoothL1Loss()
