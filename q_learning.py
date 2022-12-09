@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import torch
 from torch import concatenate, zeros, rand, argmax
+from torch.masked import masked_tensor
 import torch.nn as nn
 from torch.nn.functional import one_hot
 from tqdm import trange
@@ -26,7 +27,6 @@ class DQN(nn.Module):
             nn.Linear(hidden_size, hidden_size),
             nn.ReLU(),
             nn.Linear(hidden_size, n_actions),
-            nn.ReLU(),
         )
 
     def forward(self, x_1, x_2):
@@ -54,37 +54,21 @@ class QLearning:
     ) -> int:
         possible_actions = pokemon.get_actions()  # subset of [0, 1, 2, 3]
         # exploration
+        # breakpoint()
         e = rand(1)
-        if e <= epsilon:
+        if e < epsilon:
             action = torch.tensor(np.random.choice(possible_actions)).float()
             # print(f"exploration action picked: {action}")
         # exploitation
         else:
-            # with torch.no_grad():
-            q_values = self.dqn(state_1, state_2) * one_hot(possible_actions, N_ACTIONS).sum(axis=0)
+            with torch.no_grad():
+            # q_values = self.dqn(state_1, state_2) * one_hot(possible_actions, N_ACTIONS).sum(axis=0)
+                q_values = masked_tensor(self.dqn(state_1, state_2), one_hot(possible_actions, N_ACTIONS).sum(axis=0).bool())
 
             action = argmax(q_values)
+            # breakpoint()
             # print(f"exploitation action picked: {action}")
         return action.long().item()
-
-    # def optimize(self, state_1, state_2, battle: Battle, battle_2: Battle):
-    #     action_1 = self.select_action(state_1, battle.pokemon_1)
-    #     value_1 = self.dqn(state_1)[action_1]
-    #     action_2 = self.select_action(state_2, battle_2.pokemon_2)
-    #     value_2 = self.dqn(state_2)[action_2]
-    #     next_state_1 = battle_1.get_next_state(state_1, action_1, action_2)
-    #     next_state_2 = battle_2.get_next_state(state_2, action_2, action_1)
-    #     reward_1 = battle_1.get_reward(next_state_1)
-    #     reward_2 = battle_2.get_reward(next_state_2)
-    #     expected_value_1 = reward_1 + self.gamma * torch.amax(self.dqn(next_state_1) * one_hot(battle_1.pokemon_1.get_actions(next_state_1)).sum(axis=0))
-    #     expected_value_2 = reward_2 + self.gamma * torch.amax(self.dqn(next_state_2) * one_hot(battle_2.pokemon_2.get_actions(next_state_2)).sum(axis=0))
-
-    #     loss = self.loss_function(value_1, expected_value_1) + self.loss_function(value_2, expected_value_2)
-    #     self.optimizer.zero_grad()
-    #     loss.backwards()
-    #     self.optimizer.step()
-
-    #     return next_state_1, next_state_2
 
     def initialize_pokemon(self, pokemon_df: pd.DataFrame, fast_moves_df: pd.DataFrame, charged_moves_df: pd.DataFrame):
         choice_1 = np.random.choice(len(pokemon_df))
@@ -93,7 +77,17 @@ class QLearning:
         rock_slide = ChargedAttack(*charged_moves_df[charged_moves_df["Move"] == "Rock Slide"].values[0, :3])
         earthquake = ChargedAttack(*charged_moves_df[charged_moves_df["Move"] == "Earthquake"].values[0, :3])
         pokemon_1 = Pokemon(*pokemon_df.iloc[choice_1].tolist()[:4], mud_shot, rock_slide, earthquake)
-        pokemon_2 = PokemonNoAttack(*pokemon_df.iloc[choice_2].tolist()[:4], mud_shot, rock_slide, earthquake)
+        pokemon_2 = PokemonRandomAction(*pokemon_df.iloc[choice_2].tolist()[:4], mud_shot, rock_slide, earthquake)
+
+        # fast_move_1 = FastAttack(*fast_moves_df.iloc[np.random.choice(len(fast_moves_df))].tolist()[:4])
+        # fast_move_2 = FastAttack(*fast_moves_df.iloc[np.random.choice(len(fast_moves_df))].tolist()[:4])
+        # charged_move_1 = ChargedAttack(*charged_moves_df.iloc[np.random.choice(len(charged_moves_df))].tolist()[:3])
+        # charged_move_2 = ChargedAttack(*charged_moves_df.iloc[np.random.choice(len(charged_moves_df))].tolist()[:3])
+        # charged_move_3 = ChargedAttack(*charged_moves_df.iloc[np.random.choice(len(charged_moves_df))].tolist()[:3])
+        # charged_move_4 = ChargedAttack(*charged_moves_df.iloc[np.random.choice(len(charged_moves_df))].tolist()[:3])
+        # pokemon_1 = Pokemon(*pokemon_df.iloc[choice_1].tolist()[:4], fast_move_1, charged_move_1, charged_move_2)
+        # pokemon_2 = PokemonRandomAction(*pokemon_df.iloc[choice_2].tolist()[:4], fast_move_2, charged_move_3, charged_move_4)
+
         return pokemon_1, pokemon_2
 
     def learn(
@@ -104,6 +98,7 @@ class QLearning:
         max_epochs: int = 100,
     ):
         losses = []
+        actions = []
         for epoch in trange(max_epochs):
             pokemon_1, pokemon_2 = self.initialize_pokemon(pokemon_df, fast_moves_df, charged_moves_df)
             battle = Battle(pokemon_1, pokemon_2)
@@ -120,13 +115,8 @@ class QLearning:
                     * one_hot(battle.pokemon_1.get_actions(), N_ACTIONS).sum(axis=0)
                 )
                 loss = self.loss_function(value, expected_value)
-                # if loss.item() > 1000:
-                #     print(value_1)
-                #     print(state_1)
-                #     print(reward_1)
-                #     print(expected_value_1)
-                #     breakpoint()
                 losses.append(loss.detach())
+                actions.append(action_1)
 
                 self.dqn.zero_grad()
                 loss.backward()
@@ -135,4 +125,4 @@ class QLearning:
                 if battle.done():
                     break
 
-        return losses
+        return losses, actions
