@@ -24,21 +24,6 @@ Stunfisk = Pokemon(
     *pokemon_df[pokemon_df["Name"] == "Stunfisk (Galarian)"].values[0, :4], mud_shot, rock_slide, earthquake
 )
 # Registeel = Pokemon(*pokemon_df_dict["Registeel"][0:3], lock_on, focus_blast, flash_cannon)
-stunfisk1 = Pokemon(
-    *pokemon_df[pokemon_df["Name"] == "Stunfisk (Galarian)"].values[0, :4], mud_shot, rock_slide, earthquake
-)
-stunfisk2 = PokemonNoAttack(
-    *pokemon_df[pokemon_df["Name"] == "Stunfisk (Galarian)"].values[0, :4], mud_shot, rock_slide, earthquake
-)
-stunfisk3 = PokemonFastAttack(
-    *pokemon_df[pokemon_df["Name"] == "Stunfisk (Galarian)"].values[0, :4], mud_shot, rock_slide, earthquake
-)
-stunfisk4 = PokemonChargedAttack(
-    *pokemon_df[pokemon_df["Name"] == "Stunfisk (Galarian)"].values[0, :4], mud_shot, rock_slide, earthquake
-)
-stunfisk5 = PokemonRandomAction(
-    *pokemon_df[pokemon_df["Name"] == "Stunfisk (Galarian)"].values[0, :4], mud_shot, rock_slide, earthquake
-)
 
 
 def simulate_battle(agent: QLearning, pokemon_1: Pokemon, pokemon_2: Pokemon, max_steps: int = 1000) -> None:
@@ -51,8 +36,7 @@ def simulate_battle(agent: QLearning, pokemon_1: Pokemon, pokemon_2: Pokemon, ma
         if battle.done():
             break
         action = agent.select_action(*battle.get_state(), pokemon_1, 0)
-        # print(f"Step {i} Selected actions: {action}")
-        battle.update(action, pokemon_2.get_actions()[0])
+        battle.update(action, torch.arange(4).reshape(1, 4)[pokemon_2.get_actions()][0].item())
 
     plt.plot(hp_1, label="Pokemon 1 HP")
     plt.plot(hp_2, label="Pokemon 2 HP")
@@ -61,17 +45,45 @@ def simulate_battle(agent: QLearning, pokemon_1: Pokemon, pokemon_2: Pokemon, ma
 
 
 torch.manual_seed(0)
-agent = QLearning(hidden_size=64)
-losses = agent.buffer_learn(pokemon_df.iloc[:10], fast_moves_df, charged_moves_df, 200)
-# losses, moves = agent.learn(pokemon_df.iloc[:1], fast_moves_df, charged_moves_df, 50)
+agent = QLearning(hidden_size=16, batch_size=256, lr=1e-5, weight_decay=1e-7)
+losses, moves, rewards = [], [], []
+# classes = [PokemonNoAttack, PokemonFastAttack, PokemonRandomAction, PokemonChargedAttack]
+classes = [Pokemon]
+for pokemon_class in classes:
+    l, m , r = agent.buffer_learn(pokemon_df.iloc[:10], fast_moves_df, charged_moves_df, pokemon_class, 200)
+    losses.extend(l)
+    moves.extend(m)
+    rewards.extend(r)
+# losses, moves, rewards = agent.learn(pokemon_df.iloc[:1], fast_moves_df, charged_moves_df, PokemonNoAttack, 100)
 # losses, moves = agent.learn(pokemon_df, fast_moves_df, charged_moves_df, 100)
+plt.title("Losses")
 plt.plot(losses)
 plt.yscale("log")
 plt.show()
-# plt.hist(moves)
-# plt.show()
+plt.title("Moves")
+plt.hist(moves)
+plt.show()
+plt.title("Rewards")
+plt.plot(rewards)
+plt.show()
 
-
+stunfisk1 = Pokemon(
+    *pokemon_df[pokemon_df["Name"] == "Stunfisk (Galarian)"].values[0, :4], mud_shot, rock_slide, earthquake
+)
+print(stunfisk1)
+print(stunfisk1.get_state(stunfisk1))
+stunfisk2 = PokemonNoAttack(
+    *pokemon_df[pokemon_df["Name"] == "Stunfisk (Galarian)"].values[0, :4], mud_shot, rock_slide, earthquake
+)
+stunfisk3 = PokemonFastAttack(
+    *pokemon_df[pokemon_df["Name"] == "Stunfisk (Galarian)"].values[0, :4], mud_shot, rock_slide, earthquake
+)
+stunfisk4 = PokemonChargedAttack(
+    *pokemon_df[pokemon_df["Name"] == "Stunfisk (Galarian)"].values[0, :4], mud_shot, rock_slide, earthquake
+)
+stunfisk5 = PokemonRandomAction(
+    *pokemon_df[pokemon_df["Name"] == "Stunfisk (Galarian)"].values[0, :4], mud_shot, rock_slide, earthquake
+)
 simulate_battle(agent, stunfisk1, stunfisk2)
 stunfisk1 = Pokemon(
     *pokemon_df[pokemon_df["Name"] == "Stunfisk (Galarian)"].values[0, :4], mud_shot, rock_slide, earthquake

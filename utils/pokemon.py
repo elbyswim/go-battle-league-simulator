@@ -75,17 +75,17 @@ Charged Attack 2: {self.charged_attack_2}
             self.energy -= self.charged_attack_2.energy_cost
 
     def get_actions(self) -> torch.Tensor:
-        actions = [0]
+        actions = torch.ones(4)
         # fast attack
-        if self.cooldown <= 0:
-            actions.append(1)
+        if self.cooldown > 0:
+            actions[1] = 0
         # charged attack 1
-        if self.energy >= self.charged_attack_1.energy_cost:
-            actions.append(2)
+        if self.energy < self.charged_attack_1.energy_cost:
+            actions[2] = 0
         # charged attack 2
-        if self.energy >= self.charged_attack_2.energy_cost:
-            actions.append(3)
-        return torch.tensor(actions)
+        if self.energy < self.charged_attack_2.energy_cost:
+            actions[3] = 0
+        return actions.reshape(1, 4).bool()
 
     def fast_attack_damage(self, defender: Pokemon) -> float:
         # effectiveness = defender.type_effectiveness[self.fast_attack.type]
@@ -122,20 +122,14 @@ class PokemonNoAttack(Pokemon):
     """Pokemon that never attacks."""
 
     def get_actions(self) -> torch.Tensor:
-        actions = [0]
-        return torch.tensor(actions)
+        return torch.tensor([1, 0, 0, 0]).reshape(1, 4).bool()
 
 
 class PokemonFastAttack(Pokemon):
     """Pokemon that fast attacks when possible. Never uses charged attack."""
 
     def get_actions(self) -> torch.Tensor:
-        # fast attack if possible
-        if self.cooldown <= 0:
-            actions = [1]
-        else:
-            actions = [0]
-        return torch.tensor(actions)
+        return torch.tensor([self.cooldown > 0, self.cooldown <= 0, 0, 0]).reshape(1, 4).bool()
 
 
 class PokemonChargedAttack(Pokemon):
@@ -147,13 +141,15 @@ class PokemonChargedAttack(Pokemon):
     def get_actions(self) -> torch.Tensor:
         # do charged move if able
         if self.energy >= self.charged_attack_1.energy_cost:
-            actions = [2]
+            action = 2
         # else do fast attack if able
         elif self.cooldown <= 0:
-            actions = [1]
+            action = 1
         else:
-            actions = [0]
-        return torch.tensor(actions)
+            action = 0
+        actions = torch.zeros(4)
+        actions[action] = 1
+        return actions.reshape(1, 4).bool()
 
 
 class PokemonRandomAction(Pokemon):
@@ -174,5 +170,6 @@ class PokemonRandomAction(Pokemon):
         # charged attack 2
         if self.energy >= self.charged_attack_2.energy_cost:
             actions.append(3)
-        actions = [random.choice(actions)]
-        return torch.tensor(actions)
+        actions_tensor = torch.zeros(4)
+        actions_tensor[random.choice(actions)] = 1
+        return actions_tensor.reshape(1, 4).bool()
