@@ -4,17 +4,17 @@ class FastAttack:
         name: str,
         damage: int,
         energy_generated: int,
-        cooldown: int
-        # , type: str
+        cooldown: int,
+        type: str
     ) -> None:
         self.name = name
         self.damage = damage
         self.energy_generated = energy_generated
-        self.cooldown = cooldown
-        # self.type = type
+        self.cooldown = cooldown - 1
+        self.type = type.capitalize()
 
     def __repr__(self) -> str:
-        return f"Name: {self.name}, damage: {self.damage}, energy generated: {self.energy_generated}, cooldown: {self.cooldown}"
+        return f"Name: {self.name}, damage: {self.damage}, energy generated: {self.energy_generated}, cooldown: {self.cooldown + 1}"
 
 
 class ChargedAttack:
@@ -22,13 +22,13 @@ class ChargedAttack:
         self,
         name: str,
         damage: int,
-        energy_cost: int
-        # , type: str
+        energy_cost: int,
+        type: str
     ) -> None:
         self.name = name
         self.damage = damage
         self.energy_cost = energy_cost
-        # self.type = type
+        self.type = type.capitalize()
 
     def __repr__(self) -> str:
         return f"Name: {self.name}, damage: {self.damage}, energy cost: {self.energy_cost}"

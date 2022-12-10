@@ -6,7 +6,6 @@ import torch
 
 from .attacks import FastAttack, ChargedAttack
 
-
 class Pokemon:
     def __init__(
         self,
@@ -14,9 +13,9 @@ class Pokemon:
         initial_hp: float,
         attack: float,
         defense: float,
-        # type_1 = str
-        # type_2 = str
-        # type_effectiveness: dict
+        type_1: str,
+        type_2: str,
+        type_effectiveness: dict,
         fast_attack: FastAttack,
         charged_attack_1: ChargedAttack,
         charged_attack_2: ChargedAttack,
@@ -27,9 +26,9 @@ class Pokemon:
         self.cooldown = 0
         self.attack = attack
         self.defense = defense
-        # self.type_1 = type_1
-        # self.type_2 = type_2
-        # self.type_effectiveness = type_effectiveness
+        self.type_1 = type_1
+        self.type_2 = type_2
+        self.type_effectiveness = type_effectiveness
         self.fast_attack = fast_attack
         self.charged_attack_1 = charged_attack_1
         self.charged_attack_2 = charged_attack_2
@@ -38,6 +37,7 @@ class Pokemon:
         return f"""
 Name: {self.name}
 HP: {self.hp}, Energy: {self.energy}, Cooldown: {self.cooldown}
+Type 1: {self.type_1}, Type 2: {self.type_2}
 Fast Attack: {self.fast_attack}
 Charged Attack 1: {self.charged_attack_1}
 Charged Attack 2: {self.charged_attack_2}
@@ -88,33 +88,30 @@ Charged Attack 2: {self.charged_attack_2}
         return actions.reshape(1, 4).bool()
 
     def fast_attack_damage(self, defender: Pokemon) -> float:
-        # effectiveness = defender.type_effectiveness[self.fast_attack.type]
-        # if self.fast_attack.type == self.type_1 or self.fast_attack.type == self.type_2:
-        #     stab = 1.2
-        # else: stab = 1
+        effectiveness = defender.type_effectiveness[self.fast_attack.type]
+        if self.fast_attack.type == self.type_1 or self.fast_attack.type == self.type_2:
+            stab = 1.2
+        else: stab = 1
         bonus_multiplier = 0.65
-        damage = math.floor(self.fast_attack.damage * self.attack / defender.defense * bonus_multiplier)
-        # need to also multiply by stab and effectiveness
+        damage = math.floor(self.fast_attack.damage * self.attack / defender.defense * bonus_multiplier * stab * effectiveness)
         return damage + 1
 
     def charged_attack_1_damage(self, defender: Pokemon, charge: float = 1) -> float:
-        # effectiveness = defender.type_effectiveness[self.charged_attack_1.type]
-        # if self.charged_attack_1.type == self.type_1 or self.charged_attack_1.type == self.type_2:
-        #     stab = 1.2
-        # else: stab = 1
+        effectiveness = defender.type_effectiveness[self.charged_attack_1.type]
+        if self.charged_attack_1.type == self.type_1 or self.charged_attack_1.type == self.type_2:
+            stab = 1.2
+        else: stab = 1
         bonus_multiplier = 0.65
-        damage = math.floor(self.charged_attack_1.damage * self.attack / defender.defense * bonus_multiplier * charge)
-        # need to also multiply by stab and effectiveness
+        damage = math.floor(self.charged_attack_1.damage * self.attack / defender.defense * bonus_multiplier * charge * stab * effectiveness)
         return damage + 1
 
     def charged_attack_2_damage(self, defender: Pokemon, charge: float = 1) -> float:
-        # effectiveness = defender.type_effectiveness[self.charged_attack_1.type]
-        # if self.charged_attack_2.type == self.type_1 or self.charged_attack_2.type == self.type_2:
-        #     stab = 1.2
-        # else: stab = 1
+        effectiveness = defender.type_effectiveness[self.charged_attack_1.type]
+        if self.charged_attack_2.type == self.type_1 or self.charged_attack_2.type == self.type_2:
+            stab = 1.2
+        else: stab = 1
         bonus_multiplier = 0.65
-        damage = math.floor(self.charged_attack_2.damage * self.attack / defender.defense * bonus_multiplier * charge)
-        # need to also multiply by stab and effectiveness
+        damage = math.floor(self.charged_attack_2.damage * self.attack / defender.defense * bonus_multiplier * charge * stab * effectiveness)
         return damage + 1
 
 

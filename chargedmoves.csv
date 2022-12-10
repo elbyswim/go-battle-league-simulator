@@ -1,11 +1,8 @@
 Move,D,E_cost,Type,Effects
-Acid Spray,20,45,poison,100% chance -2 Def opponent
 Acrobatics,110,60,flying,
 Aerial Ace,55,45,flying,
 Aeroblast,170,75,flying,12.5% chance +2 Atk self
-Air Cutter,60,55,flying,
 Ancient Power,60,45,rock,10% chance +1 Atk +1 Def self
-Aqua Jet,45,45,water,
 Aqua Tail,50,35,water,
 Aura Sphere,100,55,fighting,
 Aurora Beam,80,60,ice,
@@ -19,7 +16,6 @@ Brave Bird,130,55,flying,100% chance -3 Def self
 Brick Break,40,35,fighting,
 Brine,60,50,water,
 Brutal Swing,65,40,dark,
-Bubble Beam,25,40,water,100% chance -1 Atk opponent
 Bug Buzz,100,60,bug,30% chance -1 Def opponent
 Bulldoze,80,60,ground,
 Close Combat,100,45,fighting,100% chance -2 Def self
@@ -36,21 +32,17 @@ Doom Desire,75,40,steel,
 Draco Meteor,150,65,dragon,100% chance -2 Atk self
 Dragon Claw,50,35,dragon,
 Dragon Pulse,90,60,dragon,
-Drain Punch,20,40,fighting,100% chance +1 Def self
 Draining Kiss,60,55,fairy,
 Drill Peck,65,40,flying,
 Drill Run,80,45,ground,
 Dynamic Punch,90,50,fighting,
 Earth Power,90,55,ground,10% chance -1 Def opponent
 Earthquake,120,65,ground,
-Energy Ball,90,55,grass,10% chance -1 Def opponent
-Feather Dance,35,50,flying,100% chance -2 Atk opponent
-Fell Stinger,20,35,bug,100% chance +1 Atk self
+Energy Ball,90,55,Grass
 Fire Blast,140,80,fire,
 Fire Punch,55,40,fire,
 Flame Burst,70,55,fire,
 Flame Charge,65,50,fire,100% chance +1 Atk self
-Flame Wheel,60,55,fire,
 Flamethrower,90,55,fire,
 Flash Cannon,110,70,steel,
 Fly,80,45,flying,
@@ -60,16 +52,13 @@ Foul Play,70,45,dark,
 Frenzy Plant,100,45,grass,
 Frustration,10,70,normal,
 Future Sight,120,65,psychic,
-Giga Drain,50,80,grass,
 Giga Impact,150,80,normal,
 Grass Knot,90,50,grass,
 Gunk Shot,130,75,poison,
 Gyro Ball,80,60,steel,
-Heart Stamp,40,40,psychic,
 Heat Wave,95,75,fire,
 Heavy Slam,70,50,steel,
 High Horsepower,100,60,ground,
-Horn Attack,40,35,normal,
 Hurricane,110,65,flying,
 Hydro Cannon,80,40,water,
 Hydro Pump,130,75,water,
@@ -83,24 +72,18 @@ Iron Head,70,50,steel,
 Last Resort,90,55,normal,
 Leaf Blade,70,35,grass,
 Leaf Storm,130,55,grass,100% chance -2 Atk self
-Leaf Tornado,45,40,grass,50% chance -2 Atk opponent
-Low Sweep,40,40,fighting,
 Lunge,60,45,bug,100% chance -1 Atk opponent
 Luster Purge,120,60,psychic,50% chance -1 Def opponent
 Magnet Bomb,70,45,steel,
-Mega Drain,25,55,grass,
 Megahorn,110,55,bug,
 Meteor Beam,120,60,rock,100% chance +1 Atk self
 Meteor Mash,100,50,steel,
 Mirror Coat,60,55,psychic,
-Mirror Shot,35,35,steel,30% chance -1 Atk opponent
 Mist Ball,120,60,psychic,50% chance -1 Atk opponent
-Moonblast,110,60,fairy,10% chance -1 Atk opponent
+Moonblast,110,60,fairy
 Mud Bomb,55,40,ground,
-Muddy Water,35,35,water,30% chance -1 Atk opponent
 Night Shade,60,55,ghost,
 Night Slash,50,35,dark,12.5% chance +2 Atk self
-Obstruct,15,40,dark,100% chance +1 Def self 100% chance -1 Def opponent
 Octazooka,50,50,water,50% chance -2 Atk opponent
 Ominous Wind,45,45,ghost,10% chance +1 Atk +1 Def self
 Origin Pulse,130,60,water,
@@ -114,15 +97,13 @@ Poison Fang,40,35,poison,100% chance -1 Def opponent
 Poltergeist,140,75,ghost,
 Power Gem,80,60,rock,
 Power Whip,90,50,grass,
-Power-Up Punch,20,35,fighting,100% chance +1 Atk self
 Precipice Blades,130,60,ground,
 Psybeam,70,60,psychic,
-Psychic,90,55,psychic,10% chance -1 Def opponent
+Psychic,90,55,psychic
 Psychic Fangs,40,35,psychic,100% chance -1 Def opponent
 Psycho Boost,70,35,psychic,100% chance -2 Atk self
 Psyshock,70,45,psychic,
 Psystrike,90,45,psychic,
-Razor Shell,35,35,water,50% chance -1 Def opponent
 Rest,50,35,normal,
 Return,130,70,normal,
 Rock Blast,50,40,rock,
@@ -131,7 +112,6 @@ Rock Tomb,70,60,rock,100% chance -1 Atk opponent
 Rock Wrecker,110,50,rock,
 Sacred Fire,130,65,fire,50% chance -1 Atk opponent
 Sacred Sword,60,35,fighting,
-Sand Tomb,25,40,ground,100% chance -1 Def opponent
 Scald,80,50,water,30% chance -1 Atk opponent
 Seed Bomb,55,40,grass,
 Seed Flare,130,75,grass,40% chance -2 Def opponent
@@ -165,9 +145,7 @@ Thunder,100,60,electric,
 Thunder Punch,55,40,electric,
 Thunderbolt,90,55,electric,
 Tri Attack,65,50,normal,50% chance -1 Atk -1 Def opponent
-Twister,45,45,dragon,
 V-Create,95,40,fire,100% chance -3 Def self
-Vise Grip,40,40,normal,
 Water Pulse,70,60,water,
 Weather Ball (Fire),55,35,fire,
 Weather Ball (Ice),55,35,ice,
@@ -175,8 +153,5 @@ Weather Ball (Normal),55,35,normal,
 Weather Ball (Rock),55,35,rock,
 Weather Ball (Water),55,35,water,
 Wild Charge,100,45,electric,100% chance -2 Def self
-Wrap,60,45,normal,
-Wrap Green,25,45,normal,
-Wrap Pink,25,45,normal,
 X-Scissor,45,35,bug,
-Zap Cannon,150,80,electric,66% chance -1 Atk opponent
+Zap Cannon,150,80,electric
