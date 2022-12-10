@@ -147,7 +147,6 @@ class QLearning:
                 # print(next_values)
                 # print(expected_value)
                 # print(loss)
-                # breakpoint()
                 losses.append(loss.detach())
                 actions.append(action_1)
 
@@ -316,7 +315,10 @@ class QLearningTeam:
                         charged_move_2,
                     )
                 )
-            teams.append(self.team_class(*pokemon))
+            if t == 0:
+                teams.append(self.team_class(*pokemon))
+            else:
+                teams.append(opponent_class(*pokemon))
         return teams[0], teams[1]
 
     def learn(
@@ -362,7 +364,6 @@ class QLearningTeam:
                 # print(next_values)
                 # print(expected_value)
                 # print(loss)
-                # breakpoint()
                 losses.append(loss.detach())
                 actions.append(action_1)
 
@@ -434,7 +435,7 @@ class QLearningTeam:
         pokemon_df: pd.DataFrame,
         fast_moves_df: pd.DataFrame,
         charged_moves_df: pd.DataFrame,
-        opponent_class = PokemonRandomAction,
+        opponent_class = Team,
         max_epochs: int = 100,
     ):
         losses = []
@@ -445,7 +446,7 @@ class QLearningTeam:
             battle = TeamBattle(team_1, team_2)
             state_1, state_2 = battle.get_state()
             reward_episode = 0
-            for t in range(50):
+            for t in range(300):
                 action_1 = self.select_action(state_1, state_2, battle.team_1, 1 / (epoch + 1))
                 actions.append(action_1)
                 action_2 = self.select_action(state_2, state_1, battle.team_2, 1)
@@ -468,6 +469,7 @@ class QLearningTeam:
                 if done:
                     break
             losses.append(loss)
+            # rewards.append(reward)
             rewards.append(reward_episode)
 
         return losses, actions, rewards

@@ -37,18 +37,24 @@ Team 2: {self.team_2}
         self.team_2.update(action_2, action_1, damage_1)
 
     def get_reward(self, action: int) -> float:
-        # if self.team_2.pokemon_1.hp <= 0:
-        #     reward = 200.0
+        possible_actions = self.team_1.get_actions()
         if self.team_2.lost():
             reward = 200
         elif action == 1:
-            reward = self.team_1.pokemon_1.fast_attack_damage(self.team_2.pokemon_1)  # fast attack damage
+            if any(possible_actions[0, 2:4]):
+                reward = -10
+            else:
+                reward = self.team_1.pokemon_1.fast_attack_damage(self.team_2.pokemon_1)  # fast attack damage
+                # reward = 1
         elif action == 2:
             reward = self.team_1.pokemon_1.charged_attack_1_damage(self.team_2.pokemon_1)  # charged attack 1 damage
         elif action == 3:
             reward = self.team_1.pokemon_1.charged_attack_2_damage(self.team_2.pokemon_1)  # charged attack 2 damage
         else:
-            reward = 0
+            if any(possible_actions[0, 1:4]):
+                reward = -10
+            else:
+                reward = -1
         return reward / 200
 
     def done(self) -> bool:

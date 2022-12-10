@@ -75,16 +75,20 @@ Pokemon 3: {self.pokemon_3}
         self.pokemon_1.hp -= damage_taken
         if action == 0:
             self.pokemon_1.cooldown -= 1
+            self.switch_cooldown -= 1
         # fast attack
         if action == 1:
             self.pokemon_1.energy += self.pokemon_1.fast_attack.energy_generated
             self.pokemon_1.cooldown = self.pokemon_1.fast_attack.cooldown
+            self.switch_cooldown -= 1
         # Charged move 1
         if action == 2:
             self.pokemon_1.energy -= self.pokemon_1.charged_attack_1.energy_cost
+            self.switch_cooldown -= 1
         # Charged move 2
         if action == 3:
             self.pokemon_1.energy -= self.pokemon_1.charged_attack_2.energy_cost
+            self.switch_cooldown -= 1
         # Switch 2
         if action == 4:
             self.pokemon_1, self.pokemon_2 = self.pokemon_2, self.pokemon_1
@@ -93,6 +97,7 @@ Pokemon 3: {self.pokemon_3}
         if action == 5:
             self.pokemon_1, self.pokemon_3 = self.pokemon_3, self.pokemon_1
             self.switch_cooldown = COOLDOWN
+        # opponent charged move resets fast move cooldown
         if opponent_action in {2, 3}:
             self.pokemon_1.cooldown = 0
 
@@ -126,6 +131,35 @@ Pokemon 3: {self.pokemon_3}
         return self.pokemon_1.hp <= 0 and self.pokemon_2.hp <= 0 and self.pokemon_3.hp <= 0
 
 
+class TeamNoAttack(Team):
+    def get_actions(self) -> torch.Tensor:
+        if self.pokemon_1.hp > 0:
+            actions = torch.tensor([1, 0, 0, 0, 0, 0])
+        else:
+            actions = torch.zeros(6)
+            if self.pokemon_2.hp > 0:
+                actions[4] = 1
+            if self.pokemon_3.hp > 0:
+                actions[5] = 1
+        return actions.reshape(1, 6).bool()
+
+
+class TeamFastAttack(Team):
+    def get_actions(self) -> torch.Tensor:
+        actions = torch.zeros(6)
+        if self.pokemon_1.hp > 0:
+            if self.pokemon_1.cooldown > 0:
+                actions[0] = 1
+            else:
+                actions[1] = 1
+        else:
+            if self.pokemon_2.hp > 0:
+                actions[4] = 1
+            if self.pokemon_3.hp > 0:
+                actions[5] = 1
+        return actions.reshape(1, 6).bool()
+
+
 class HiddenTeam(Team):
     def get_state(self, defending_team: Team) -> torch.Tensor:
         return (
@@ -156,3 +190,4 @@ class HiddenTeam(Team):
             .float()
             .reshape(1, -1)
         )
+

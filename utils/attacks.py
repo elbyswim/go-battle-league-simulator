@@ -14,7 +14,7 @@ class FastAttack:
         self.type = type.capitalize()
 
     def __repr__(self) -> str:
-        return f"Name: {self.name}, damage: {self.damage}, energy generated: {self.energy_generated}, cooldown: {self.cooldown + 1}"
+        return f"Name: {self.name}, type: {self.type}, damage: {self.damage}, energy generated: {self.energy_generated}, cooldown: {self.cooldown + 1}"
 
 
 class ChargedAttack:
@@ -31,4 +31,4 @@ class ChargedAttack:
         self.type = type.capitalize()
 
     def __repr__(self) -> str:
-        return f"Name: {self.name}, damage: {self.damage}, energy cost: {self.energy_cost}"
+        return f"Name: {self.name}, type: {self.type}, damage: {self.damage}, energy cost: {self.energy_cost}"
