@@ -8,9 +8,11 @@ def main():
     agent = QLearningTeam(input_dim=72, n_actions=6, hidden_size=32, batch_size=32, lr=1e-5, weight_decay=1e-7)
     agent.dqn.load_state_dict(torch.load("model.pt"))
 
-    simulate_team_battle(agent, make_team(Team), make_team(TeamNoAttack))
-    simulate_team_battle(agent, make_team(Team), make_team(TeamFastAttack))
-    simulate_team_battle(agent, make_team(Team), make_team(Team))
+    # simulate_team_battle(agent, make_team(Team), make_team(TeamNoAttack))
+    # simulate_team_battle(agent, make_team(Team), make_team(TeamFastAttack))
+    results = [simulate_team_battle(agent, make_team(Team), make_team(Team)) for _ in range(1000)]
+
+    print(sum(results))
 
 if __name__ == "__main__":
     main()
